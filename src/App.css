@@ -68,6 +68,10 @@
   justify-content: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .table {
   table-layout: auto;
   width: 100%;

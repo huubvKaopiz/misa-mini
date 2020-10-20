@@ -20,9 +20,9 @@ function App() {
       <table className="table mt-1">
         <thead>
           <tr>
-            <th>date</th>
-            <th>reason</th>
-            <th>price</th>
+            <th className="text-left">date</th>
+            <th className="text-left">reason</th>
+            <th className="text-left">price</th>
           </tr>
         </thead>
         <tbody>
