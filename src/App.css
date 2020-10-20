@@ -1,3 +1,5 @@
+@import "~antd/dist/antd.css";
+
 .App {
   text-align: center;
 }
@@ -35,4 +37,51 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  padding: 10px;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+
+.form-group label {
+  width: 80px;
+}
+
+.form-group input[type="text"] {
+  width: 250px;
+}
+
+.align-center {
+  justify-content: center;
+}
+
+.table {
+  table-layout: auto;
+  width: 100%;
+}
+
+.table thead tr {
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.table td,th {
+  padding: 10px 0;
 }
