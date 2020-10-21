@@ -159,10 +159,9 @@ function App() {
         </div>
 
         <div className="statistical">
-          <Statistic title="08/2020" value={1231} />
-          <Statistic title="09/2020" value={9123} />
-          <Statistic title="10/2020" value={9223} />
-          <Statistic title="11/2020" value={1000} />
+          <Statistic title="08/2020" value={12311} />
+          <Statistic title="09/2020" value={91213} />
+          <Statistic title="10/2020" value={92213} />
         </div>
 
         <table className="table mt-1">
