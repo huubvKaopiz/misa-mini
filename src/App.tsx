@@ -1,9 +1,51 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
-import { Input, Button, notification, Spin, Modal } from "antd";
+import {
+  Input,
+  Button,
+  notification,
+  Spin,
+  Modal,
+  PageHeader,
+  Menu,
+  Dropdown,
+  Tag,
+  Typography,
+  Row,
+  Statistic,
+} from "antd";
 import axios from "axios";
 import moment from "moment";
 import { get } from "lodash";
+import { EllipsisOutlined } from "@ant-design/icons";
+
+const menu = (
+  <Menu>
+    <Menu.Item>1st menu item</Menu.Item>
+    <Menu.Item>2nd menu item</Menu.Item>
+    <Menu.Item>3rd menu item</Menu.Item>
+  </Menu>
+);
+
+const DropdownMenu = () => {
+  return (
+    <Dropdown key="more" overlay={menu}>
+      <Button
+        style={{
+          border: "none",
+          padding: 0,
+        }}
+      >
+        <EllipsisOutlined
+          style={{
+            fontSize: 20,
+            verticalAlign: "top",
+          }}
+        />
+      </Button>
+    </Dropdown>
+  );
+};
 
 function App() {
   const [receiptPayload, setReceiptPayload] = useState({
@@ -94,6 +136,14 @@ function App() {
   return (
     <Spin spinning={loading}>
       <div className="container">
+        <PageHeader
+          title="Misa"
+          className="site-page-header"
+          subTitle="This is a misa mini app"
+          extra={[<DropdownMenu key="more" />]}
+          onBack={() => null}
+        />
+
         <div className="form-group mb-1">
           <label htmlFor="">Reason</label>
           <Input value={receiptPayload.reason} onChange={handleChangeReason} />
@@ -106,6 +156,13 @@ function App() {
           <Button onClick={handleSaveReceipt} type="primary">
             Save changes
           </Button>
+        </div>
+
+        <div className="statistical">
+          <Statistic title="08/2020" value={1231} />
+          <Statistic title="09/2020" value={9123} />
+          <Statistic title="10/2020" value={9223} />
+          <Statistic title="11/2020" value={1000} />
         </div>
 
         <table className="table mt-1">
