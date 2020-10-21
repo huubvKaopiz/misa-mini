@@ -7,45 +7,12 @@ import {
   Spin,
   Modal,
   PageHeader,
-  Menu,
-  Dropdown,
-  Tag,
-  Typography,
-  Row,
   Statistic,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
 import { get } from "lodash";
-import { EllipsisOutlined } from "@ant-design/icons";
-
-const menu = (
-  <Menu>
-    <Menu.Item>1st menu item</Menu.Item>
-    <Menu.Item>2nd menu item</Menu.Item>
-    <Menu.Item>3rd menu item</Menu.Item>
-  </Menu>
-);
-
-const DropdownMenu = () => {
-  return (
-    <Dropdown key="more" overlay={menu}>
-      <Button
-        style={{
-          border: "none",
-          padding: 0,
-        }}
-      >
-        <EllipsisOutlined
-          style={{
-            fontSize: 20,
-            verticalAlign: "top",
-          }}
-        />
-      </Button>
-    </Dropdown>
-  );
-};
+import Header from "./components/Header";
 
 function App() {
   const [receiptPayload, setReceiptPayload] = useState({
@@ -53,10 +20,10 @@ function App() {
     reason: "",
   });
   const [receipts, setReceipts] = useState(null);
+  const [statistical, setStatistical] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const getReceipts = useCallback(async () => {
-    setLoading(true);
     try {
       const res = await axios({
         url: `${process.env.REACT_APP_API_URL}/receipts`,
@@ -69,14 +36,40 @@ function App() {
       setReceipts(res.data);
     } catch (error) {
       notification.error({ message: "Error" });
-    } finally {
-      setLoading(false);
     }
   }, []);
 
+  const getStatistical = useCallback(async function () {
+    try {
+      const res = await axios({
+        url: `${process.env.REACT_APP_API_URL}/receipts-statistical`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+      setStatistical(res.data);
+    } catch (error) {
+      notification.error({ message: "Error" });
+    }
+  }, []);
+
+  const getData = useCallback(async () => {
+    try {
+      setLoading(true);
+      await getStatistical();
+      await getReceipts();
+    } catch (error) {
+      notification.error({ message: "Error" });
+    } finally {
+      setLoading(false);
+    }
+  }, [getReceipts, getStatistical]);
+
   useEffect(() => {
-    getReceipts();
-  }, [getReceipts]);
+    getData();
+  }, [getData]);
 
   function handleChangeReason(e: any) {
     setReceiptPayload({ ...receiptPayload, reason: e.target.value });
@@ -99,7 +92,8 @@ function App() {
         },
       });
       notification.success({ message: "Success" });
-      getReceipts();
+      await getReceipts();
+      await getStatistical();
       setReceiptPayload({ reason: "", price: "" });
     } catch (error) {
       notification.error({ message: error.response.data.message });
@@ -123,7 +117,8 @@ function App() {
             },
           });
           notification.success({ message: "Success" });
-          getReceipts();
+          await getReceipts();
+          await getStatistical();
         } catch (error) {
           notification.error({ message: error.response.data.message });
         } finally {
@@ -140,7 +135,7 @@ function App() {
           title="Misa"
           className="site-page-header"
           subTitle="This is a misa mini app"
-          extra={[<DropdownMenu key="more" />]}
+          extra={[<Header key="more" />]}
           onBack={() => null}
         />
 
@@ -159,9 +154,9 @@ function App() {
         </div>
 
         <div className="statistical">
-          <Statistic title="08/2020" value={12311} />
-          <Statistic title="09/2020" value={91213} />
-          <Statistic title="10/2020" value={92213} />
+          <Statistic title="08/2020" value={0} />
+          <Statistic title="09/2020" value={0} />
+          <Statistic title="10/2020" value={get(statistical, "amount", 0)} />
         </div>
 
         <table className="table mt-1">
