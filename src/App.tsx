@@ -154,9 +154,18 @@ function App() {
         </div>
 
         <div className="statistical">
-          <Statistic title="08/2020" value={0} />
-          <Statistic title="09/2020" value={0} />
-          <Statistic title="10/2020" value={get(statistical, "amount", 0)} />
+          <Statistic
+            title="08/2020"
+            value={get(statistical, "amountLastOfLastMonth", 0)}
+          />
+          <Statistic
+            title="09/2020"
+            value={get(statistical, "amountLastMonth", 0)}
+          />
+          <Statistic
+            title="10/2020"
+            value={get(statistical, "amountCurrentMonth", 0)}
+          />
         </div>
 
         <table className="table mt-1">
