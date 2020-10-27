@@ -8,6 +8,8 @@ import {
   Modal,
   PageHeader,
   Statistic,
+  Pagination,
+  DatePicker,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -22,6 +24,7 @@ function App() {
   const [receipts, setReceipts] = useState(null);
   const [statistical, setStatistical] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [params, setParams] = useState({});
 
   const getReceipts = useCallback(async () => {
     try {
@@ -36,8 +39,39 @@ function App() {
       setReceipts(res.data);
     } catch (error) {
       notification.error({ message: "Error" });
+    } finally {
+      setLoading(false);
     }
   }, []);
+
+  const [init, setInit] = useState(false);
+  useEffect(() => {
+    setInit(true);
+    return () => setInit(false);
+  }, []);
+
+  useEffect(() => {
+    if (!init) return;
+    const getReceipts = async () => {
+      try {
+        const res = await axios({
+          url: `${process.env.REACT_APP_API_URL}/receipts`,
+          method: "GET",
+          params,
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+        setReceipts(res.data);
+      } catch (error) {
+        notification.error({ message: "Error" });
+      } finally {
+        setLoading(false);
+      }
+    };
+    getReceipts();
+  }, [params]);
 
   const getStatistical = useCallback(async function () {
     try {
@@ -128,6 +162,16 @@ function App() {
     });
   }
 
+  function handlePageChange(page: number) {
+    setLoading(true);
+    setParams({ ...params, page });
+  }
+
+  function handleChangeDate(date: any) {
+    setLoading(true);
+    setParams({ ...params, date: moment(date).format("YYYY-MM-DD") });
+  }
+
   return (
     <Spin spinning={loading}>
       <div className="container">
@@ -168,6 +212,8 @@ function App() {
           />
         </div>
 
+        <DatePicker format="YYYY-MM-DD" onChange={handleChangeDate} />
+
         <table className="table mt-1">
           <thead>
             <tr>
@@ -192,6 +238,14 @@ function App() {
               : null}
           </tbody>
         </table>
+        <Pagination
+          current={get(receipts, "current_page", 1)}
+          total={get(receipts, "total", 1)}
+          pageSize={get(receipts, "per_page", 1)}
+          className="mt-1"
+          onChange={handlePageChange}
+          size="small"
+        />
       </div>
     </Spin>
   );
