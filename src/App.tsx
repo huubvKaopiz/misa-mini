@@ -169,7 +169,10 @@ function App() {
 
   function handleChangeDate(date: any) {
     setLoading(true);
-    setParams({ ...params, date: moment(date).format("YYYY-MM-DD") });
+    setParams({
+      ...params,
+      date: moment(date).isValid() ? moment(date).format("YYYY-MM-DD") : null,
+    });
   }
 
   return (
