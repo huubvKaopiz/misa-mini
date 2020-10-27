@@ -187,7 +187,7 @@ function App() {
           />
         </div>
 
-        <DatePicker format="YYYY-MM-DD" onChange={handleChangeDate} />
+        <DatePicker format="YYYY-MM-DD" onChange={handleChangeDate} inputReadOnly />
 
         <table className="table mt-1">
           <thead>
