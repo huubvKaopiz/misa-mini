@@ -35,63 +35,36 @@ function App() {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
         },
+        params,
       });
       setReceipts(res.data);
     } catch (error) {
       notification.error({ message: "Error" });
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [params]);
 
-  const [init, setInit] = useState(false);
-  useEffect(() => {
-    setInit(true);
-    return () => setInit(false);
-  }, []);
-
-  useEffect(() => {
-    if (!init) return;
-    const getReceipts = async () => {
+  const getStatistical = useCallback(
+    async function () {
       try {
         const res = await axios({
-          url: `${process.env.REACT_APP_API_URL}/receipts`,
+          url: `${process.env.REACT_APP_API_URL}/receipts-statistical`,
           method: "GET",
-          params,
           headers: {
             "Content-Type": "application/json",
             "X-Requested-With": "XMLHttpRequest",
           },
+          params,
         });
-        setReceipts(res.data);
+        setStatistical(res.data);
       } catch (error) {
         notification.error({ message: "Error" });
-      } finally {
-        setLoading(false);
       }
-    };
-    getReceipts();
-  }, [params]);
-
-  const getStatistical = useCallback(async function () {
-    try {
-      const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}/receipts-statistical`,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-        },
-      });
-      setStatistical(res.data);
-    } catch (error) {
-      notification.error({ message: "Error" });
-    }
-  }, []);
+    },
+    [params]
+  );
 
   const getData = useCallback(async () => {
     try {
-      setLoading(true);
       await getStatistical();
       await getReceipts();
     } catch (error) {
@@ -102,6 +75,7 @@ function App() {
   }, [getReceipts, getStatistical]);
 
   useEffect(() => {
+    setLoading(true)
     getData();
   }, [getData]);
 
@@ -126,8 +100,7 @@ function App() {
         },
       });
       notification.success({ message: "Success" });
-      await getReceipts();
-      await getStatistical();
+      await getData();
       setReceiptPayload({ reason: "", price: "" });
     } catch (error) {
       notification.error({ message: error.response.data.message });
@@ -151,8 +124,7 @@ function App() {
             },
           });
           notification.success({ message: "Success" });
-          await getReceipts();
-          await getStatistical();
+          await getData();
         } catch (error) {
           notification.error({ message: error.response.data.message });
         } finally {
