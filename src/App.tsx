@@ -27,9 +27,22 @@ function App() {
   const [params, setParams] = useState({});
 
   const getReceipts = useCallback(async () => {
-    try {
+    const res = await axios({
+      url: `${process.env.REACT_APP_API_URL}/receipts`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      params,
+    });
+    setReceipts(res.data);
+  }, [params]);
+
+  const getStatistical = useCallback(
+    async function () {
       const res = await axios({
-        url: `${process.env.REACT_APP_API_URL}/receipts`,
+        url: `${process.env.REACT_APP_API_URL}/receipts-statistical`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -37,28 +50,7 @@ function App() {
         },
         params,
       });
-      setReceipts(res.data);
-    } catch (error) {
-      notification.error({ message: "Error" });
-    }
-  }, [params]);
-
-  const getStatistical = useCallback(
-    async function () {
-      try {
-        const res = await axios({
-          url: `${process.env.REACT_APP_API_URL}/receipts-statistical`,
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-          },
-          params,
-        });
-        setStatistical(res.data);
-      } catch (error) {
-        notification.error({ message: "Error" });
-      }
+      setStatistical(res.data);
     },
     [params]
   );
