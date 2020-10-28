@@ -75,7 +75,7 @@ function App() {
   }, [getReceipts, getStatistical]);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getData();
   }, [getData]);
 
@@ -143,6 +143,7 @@ function App() {
     setLoading(true);
     setParams({
       ...params,
+      page: 1,
       date: moment(date).isValid() ? moment(date).format("YYYY-MM-DD") : null,
     });
   }
@@ -187,7 +188,11 @@ function App() {
           />
         </div>
 
-        <DatePicker format="YYYY-MM-DD" onChange={handleChangeDate} inputReadOnly />
+        <DatePicker
+          format="YYYY-MM-DD"
+          onChange={handleChangeDate}
+          inputReadOnly
+        />
 
         <table className="table mt-1">
           <thead>
