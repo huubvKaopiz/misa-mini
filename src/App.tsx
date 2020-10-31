@@ -15,6 +15,7 @@ import axios from "axios";
 import moment from "moment";
 import { get } from "lodash";
 import Header from "./components/Header";
+import numeral from "numeral";
 
 function App() {
   const [receiptPayload, setReceiptPayload] = useState({
@@ -185,6 +186,9 @@ function App() {
           onChange={handleChangeDate}
           inputReadOnly
         />
+        <span style={{ display: "inline-block", marginLeft: "1rem" }}>
+          {numeral(get(statistical, "amountCurrent", 0)).format()}
+        </span>
 
         <table className="table mt-1">
           <thead>
