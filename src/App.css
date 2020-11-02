@@ -64,6 +64,10 @@
   width: 250px;
 }
 
+.form-group input[type="number"] {
+  width: 250px;
+}
+
 .align-center {
   justify-content: center;
 }
@@ -103,4 +107,8 @@ th {
 
 .mt-1 {
   margin-top: 1rem;
+}
+
+.ml-1 {
+  margin-left: 1rem;
 }

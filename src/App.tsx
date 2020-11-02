@@ -158,7 +158,7 @@ function App() {
         </div>
         <div className="form-group mb-1">
           <label htmlFor="">Price</label>
-          <Input value={receiptPayload.price} onChange={handleChangePrice} />
+          <Input type="number" value={receiptPayload.price} onChange={handleChangePrice} />
         </div>
         <div className="form-group">
           <Button onClick={handleSaveReceipt} type="primary">
@@ -168,15 +168,15 @@ function App() {
 
         <div className="statistical">
           <Statistic
-            title="08/2020"
+            title={get(statistical, "lastOfLastMonth", '')}
             value={get(statistical, "amountLastOfLastMonth", 0)}
           />
           <Statistic
-            title="09/2020"
+            title={get(statistical, "lastMonth", '')}
             value={get(statistical, "amountLastMonth", 0)}
           />
           <Statistic
-            title="10/2020"
+            title={get(statistical, "currentMonth", '')}
             value={get(statistical, "amountCurrentMonth", 0)}
           />
         </div>
